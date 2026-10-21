@@ -211,3 +211,5 @@ nav.tabs{position:fixed;left:0;right:0;bottom:0;z-index:20;background:var(--card
 .seg.c4{grid-template-columns:repeat(4,minmax(0,1fr))}
 .seg.c4 button{font-size:12px;letter-spacing:.03em;padding:10px 2px}
 .teams{font-size:11px;color:var(--muted);font-weight:600}
+.selects{display:flex;gap:8px}
+.selects select{flex:1;min-width:0;padding:9px 10px;border:1px solid var(--line);border-radius:8px;background:var(--card);font-size:15px}

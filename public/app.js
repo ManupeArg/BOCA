@@ -14,7 +14,7 @@ const EQUIPOS={
     rivalPh:"Brasil",torneoPh:"Eliminatorias"}
 };
 
-const filtroVacio=()=>({res:"todos",lugar:"todos",anio:"todos"});
+const filtroVacio=()=>({res:"todos",lugar:"todos",anio:"todos",torneo:"todos"});
 const S={partidos:[],canchas:[],goleadores:[],email:"",loaded:false,
   tab:"resumen",verEquipo:"boca",addMode:"boca",gAddEquipo:"boca",editPartido:null,editCancha:null,draftCrest:undefined,dirty:false,loginModo:"entrar",
   filtro:{boca:filtroVacio(),argentina:filtroVacio()}};
@@ -132,14 +132,21 @@ function vResumen(){
 function vEquipo(e){
   const E=EQUIPOS[e], F=S.filtro[e], base=partidosDe(e);
   const anios=[...new Set(base.map(p=>(p.fecha||"").slice(0,4)).filter(Boolean))].sort().reverse();
+  const torneos=new Map();base.forEach(p=>{const k=key(p.torneo);if(k&&!torneos.has(k))torneos.set(k,p.torneo.trim())});
+  const torneosOrd=[...torneos.entries()].sort((a,b)=>a[1].localeCompare(b[1]));
+  if(F.torneo!=="todos"&&!torneos.has(F.torneo))F.torneo="todos";
   let list=ordenar(base);
   if(F.anio!=="todos")list=list.filter(p=>(p.fecha||"").startsWith(F.anio));
+  if(F.torneo!=="todos")list=list.filter(p=>key(p.torneo)===F.torneo);
   if(F.lugar!=="todos")list=list.filter(p=>F.lugar==="local"?esLocal(p):!esLocal(p));
   if(F.res!=="todos")list=list.filter(p=>resultado(p)===F.res);
   const s=stats(list);
   const chip=(v,l)=>`<button type="button" class="fchip ${v}" data-f-res="${v}" data-eq="${e}" aria-pressed="${F.res===v}">${l}</button>`;
-  const head=`<div class="toolbar"><h2 class="sec" style="flex:1">${E.titulo}</h2>
-    ${anios.length>1?`<select data-f-anio="${e}" aria-label="Filtrar por año"><option value="todos">Todos los años</option>${anios.map(a=>`<option ${a===F.anio?"selected":""}>${a}</option>`).join("")}</select>`:""}</div>
+  const head=`<h2 class="sec">${E.titulo}</h2>
+    ${anios.length>1||torneosOrd.length>1?`<div class="selects">
+      ${torneosOrd.length>1?`<select data-f-torneo="${e}" aria-label="Filtrar por torneo"><option value="todos">Todos los torneos</option>${torneosOrd.map(([k,n])=>`<option value="${esc(k)}" ${k===F.torneo?"selected":""}>${esc(n)}</option>`).join("")}</select>`:""}
+      ${anios.length>1?`<select data-f-anio="${e}" aria-label="Filtrar por año"><option value="todos">Todos los años</option>${anios.map(a=>`<option ${a===F.anio?"selected":""}>${a}</option>`).join("")}</select>`:""}
+    </div>`:""}
     ${base.length?`<div class="filters">${chip("todos","Todos")}${chip("G","Ganados")}${chip("E","Empatados")}${chip("P","Perdidos")}
       ${F.lugar!=="todos"?`<button type="button" class="fchip x" aria-pressed="true" data-f-lugar-off="${e}">${F.lugar==="local"?E.local:E.otra}</button>`:""}</div>`:""}
     ${list.length?`<div class="hint-t num">${plural(s.pj,"partido","partidos")} · ${s.g}G ${s.e}E ${s.p}P · ${s.gf}-${s.gc}</div>`:""}`;
@@ -303,7 +310,7 @@ main.addEventListener("input",()=>{if(S.tab==="agregar")S.dirty=true});
 main.addEventListener("click",e=>{
   const t=e.target.closest("button");if(!t)return;
   const d=t.dataset;
-  if(d.ver){S.filtro[d.ver]={res:d.res,lugar:d.lugar,anio:"todos"};go(d.ver);return}
+  if(d.ver){S.filtro[d.ver]={...filtroVacio(),res:d.res,lugar:d.lugar};go(d.ver);return}
   if(d.verEq){S.verEquipo=d.verEq;store("verEquipo",d.verEq);render();return}
   if(d.fRes){S.filtro[d.eq].res=d.fRes;render();return}
   if(d.fLugarOff){S.filtro[d.fLugarOff].lugar="todos";render();return}
@@ -326,6 +333,7 @@ main.addEventListener("click",e=>{
 main.addEventListener("change",async e=>{
   const t=e.target;
   if(t.dataset.fAnio){S.filtro[t.dataset.fAnio].anio=t.value;render();return}
+  if(t.dataset.fTorneo){S.filtro[t.dataset.fTorneo].torneo=t.value;render();return}
   if(t.name==="cf-tipo"){const n=t.value==="neutral";$("#cf-equipo-w").hidden=n;$("#cf-escudo-w").hidden=n;return}
   if(t.id==="cfFile"){const f=t.files[0];if(!f)return;
     try{S.draftCrest=await achicar(f,256);snapshotCancha();render();S.dirty=true}catch(err){toast(err.message)}}
