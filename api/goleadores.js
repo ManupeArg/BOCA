@@ -10,11 +10,13 @@ export default handler(async (req, res) => {
     const nombre = texto(b.nombre, 60);
     const goles = entero(b.goles, 1, 500);
     if (!nombre) return error(res, 400, "Falta el nombre del jugador");
+    const equipo = b.equipo === "argentina" ? "argentina" : "boca";
     const k = clave(nombre);
-    const { data: prev } = await db().from("goleadores_manual").select("id,goles").eq("usuario_id", uid).eq("clave", k).maybeSingle();
+    const { data: prev } = await db().from("goleadores_manual").select("id,goles")
+      .eq("usuario_id", uid).eq("equipo", equipo).eq("clave", k).maybeSingle();
     const r = prev
       ? await db().from("goleadores_manual").update({ goles: prev.goles + goles }).eq("id", prev.id)
-      : await db().from("goleadores_manual").insert({ usuario_id: uid, nombre, clave: k, goles });
+      : await db().from("goleadores_manual").insert({ usuario_id: uid, equipo, nombre, clave: k, goles });
     if (r.error) throw r.error;
     return json(res, 200, { ok: true });
   }

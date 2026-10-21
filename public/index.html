@@ -9,8 +9,8 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Mis Partidos">
 <link rel="manifest" href="/manifest.webmanifest">
-<link rel="icon" href="/icon.svg" type="image/svg+xml">
-<link rel="apple-touch-icon" href="/escudo.png">
+<link rel="icon" href="/escudo.png" type="image/png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;800;900&family=Barlow:wght@400;500;600;700&display=swap">
 <link rel="stylesheet" href="/styles.css">
@@ -37,6 +37,7 @@
     <symbol id="i-list" viewBox="0 0 24 24"><path d="M8 6h12M8 12h12M8 18h12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><circle cx="4" cy="6" r="1.4" fill="currentColor"/><circle cx="4" cy="12" r="1.4" fill="currentColor"/><circle cx="4" cy="18" r="1.4" fill="currentColor"/></symbol>
     <symbol id="i-pin" viewBox="0 0 24 24"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="9.5" r="2.5" fill="currentColor"/></symbol>
     <symbol id="i-plus" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="currentColor"/><path d="M12 7v10M7 12h10" stroke="var(--card)" stroke-width="2.2" stroke-linecap="round"/></symbol>
+    <symbol id="i-arg" viewBox="0 0 24 24"><rect x="2.5" y="5" width="19" height="14" rx="2" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M2.5 9.7h19M2.5 14.3h19" stroke="currentColor" stroke-width="1.4"/><circle cx="12" cy="12" r="1.7" fill="currentColor"/></symbol>
   </defs>
 </svg>
 
@@ -73,6 +74,7 @@
     <div id="notice" class="banner" hidden></div>
     <section class="view" data-view="resumen"></section>
     <section class="view" data-view="boca" hidden></section>
+    <section class="view" data-view="argentina" hidden></section>
     <section class="view" data-view="canchas" hidden></section>
     <section class="view" data-view="goleadores" hidden></section>
     <section class="view" data-view="agregar" hidden></section>
@@ -81,8 +83,9 @@
   <nav class="tabs" aria-label="Secciones">
     <button class="tab" data-tab="resumen" aria-current="page"><svg><use href="#i-home"/></svg>Resumen</button>
     <button class="tab" data-tab="boca"><svg><use href="#i-list"/></svg>Boca</button>
+    <button class="tab" data-tab="argentina"><svg><use href="#i-arg"/></svg>Argentina</button>
     <button class="tab" data-tab="canchas"><svg><use href="#i-pin"/></svg>Canchas</button>
-    <button class="tab" data-tab="goleadores"><svg><use href="#i-ball"/></svg>Goleadores</button>
+    <button class="tab" data-tab="goleadores"><svg><use href="#i-ball"/></svg>Goles</button>
     <button class="tab add" data-tab="agregar"><svg><use href="#i-plus"/></svg>Agregar</button>
   </nav>
 </div>

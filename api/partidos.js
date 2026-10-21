@@ -11,13 +11,14 @@ async function validar(uid, b) {
     .slice(0, 30)
     .map((g) => ({ nombre: texto(g?.nombre, 60), goles: entero(g?.goles, 1, 20) }))
     .filter((g) => g.nombre);
-  if (goleadores.reduce((a, g) => a + g.goles, 0) > gf) return { err: "Hay más goles de jugadores que goles de Boca" };
+  if (goleadores.reduce((a, g) => a + g.goles, 0) > gf) return { err: "Hay más goles de jugadores que goles del equipo" };
+  const equipo = b.equipo === "argentina" ? "argentina" : "boca";
   if (!esUuid(b.canchaId)) return { err: "Elegí una cancha" };
   const { data: cancha } = await db().from("canchas").select("id,nombre").eq("id", b.canchaId).eq("usuario_id", uid).maybeSingle();
   if (!cancha) return { err: "Esa cancha no existe" };
   return {
     fila: {
-      fecha, torneo: texto(b.torneo, 80), rival, gf, gc, goleadores,
+      equipo, fecha, torneo: texto(b.torneo, 80), rival, gf, gc, goleadores,
       cancha_id: cancha.id, cancha_nombre: cancha.nombre, sector: texto(b.sector, 60),
     },
   };
