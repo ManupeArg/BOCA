@@ -1,0 +1,12 @@
+{
+  "name": "Mis Partidos de Boca",
+  "short_name": "Mis Partidos",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0A2A66",
+  "theme_color": "#0A2A66",
+  "icons": [
+    { "src": "/escudo.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "/icon.svg", "sizes": "any", "type": "image/svg+xml" }
+  ]
+}

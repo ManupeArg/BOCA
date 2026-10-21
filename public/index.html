@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Mis Partidos de Boca</title>
+<meta name="theme-color" content="#0A2A66">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Mis Partidos">
+<link rel="manifest" href="/manifest.webmanifest">
+<link rel="icon" href="/icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/escudo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;800;900&family=Barlow:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="i-stadium" viewBox="0 0 64 64">
+      <path d="M6 22 L6 14 M58 22 L58 14" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+      <rect x="2" y="9" width="8" height="5" rx="1" fill="currentColor"/>
+      <rect x="54" y="9" width="8" height="5" rx="1" fill="currentColor"/>
+      <ellipse cx="32" cy="38" rx="28" ry="16" fill="none" stroke="currentColor" stroke-width="3"/>
+      <ellipse cx="32" cy="38" rx="20" ry="10" fill="none" stroke="currentColor" stroke-width="2" opacity=".55"/>
+      <ellipse cx="32" cy="38" rx="13" ry="5.5" fill="currentColor" opacity=".22"/>
+      <path d="M4 38 V46 C4 55 60 55 60 46 V38" fill="none" stroke="currentColor" stroke-width="3"/>
+      <path d="M32 32.5 V43.5" stroke="currentColor" stroke-width="1.5" opacity=".6"/>
+    </symbol>
+    <symbol id="i-ball" viewBox="0 0 24 24">
+      <circle cx="12" cy="12" r="9.5" fill="none" stroke="currentColor" stroke-width="1.8"/>
+      <path d="M12 7.2 L16.3 10.3 L14.7 15.3 H9.3 L7.7 10.3 Z" fill="currentColor"/>
+      <path d="M12 7.2 V3 M16.3 10.3 L20.5 9 M14.7 15.3 L17.5 19.3 M9.3 15.3 L6.5 19.3 M7.7 10.3 L3.5 9" stroke="currentColor" stroke-width="1.5"/>
+    </symbol>
+    <symbol id="i-home" viewBox="0 0 24 24"><path d="M4 20V10l8-6 8 6v10h-5v-6H9v6z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></symbol>
+    <symbol id="i-list" viewBox="0 0 24 24"><path d="M8 6h12M8 12h12M8 18h12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><circle cx="4" cy="6" r="1.4" fill="currentColor"/><circle cx="4" cy="12" r="1.4" fill="currentColor"/><circle cx="4" cy="18" r="1.4" fill="currentColor"/></symbol>
+    <symbol id="i-pin" viewBox="0 0 24 24"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="9.5" r="2.5" fill="currentColor"/></symbol>
+    <symbol id="i-plus" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="currentColor"/><path d="M12 7v10M7 12h10" stroke="var(--card)" stroke-width="2.2" stroke-linecap="round"/></symbol>
+  </defs>
+</svg>
+
+<!-- Login -->
+<div class="login" id="loginView" hidden>
+  <form class="login-card" id="fLogin" autocomplete="on">
+    <div class="login-head">
+      <img src="/escudo.png" alt="" onerror="this.onerror=null;this.src='/icon.svg'">
+      <h1>Mis partidos</h1>
+      <p>Los partidos de Boca que viste en la cancha</p>
+    </div>
+    <div class="seg" role="group" aria-label="Entrar o registrarme">
+      <button type="button" data-login="entrar" aria-pressed="true">ENTRAR</button>
+      <button type="button" data-login="registrar" aria-pressed="false">REGISTRARME</button>
+    </div>
+    <div class="f" style="display:flex;flex-direction:column;gap:14px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px">
+      <div class="field"><label class="label" for="lg-email">Tu mail</label>
+        <input id="lg-email" type="email" inputmode="email" autocomplete="email" required placeholder="vos@mail.com"></div>
+      <p class="err" id="lgErr" hidden></p>
+      <button class="btn primary" type="submit" id="lgBtn">Entrar</button>
+    </div>
+  </form>
+</div>
+
+<!-- App -->
+<div id="appView" hidden>
+  <header class="top">
+    <span class="logo"><img src="/escudo.png" alt="Escudo" onerror="this.onerror=null;this.src='/icon.svg'"></span>
+    <div class="brand"><h1>Mis partidos</h1><p>Boca · desde la tribuna</p></div>
+    <div class="who-am-i"><span id="meEmail"></span><button type="button" id="logout">Salir</button></div>
+  </header>
+
+  <main>
+    <div id="notice" class="banner" hidden></div>
+    <section class="view" data-view="resumen"></section>
+    <section class="view" data-view="boca" hidden></section>
+    <section class="view" data-view="canchas" hidden></section>
+    <section class="view" data-view="goleadores" hidden></section>
+    <section class="view" data-view="agregar" hidden></section>
+  </main>
+
+  <nav class="tabs" aria-label="Secciones">
+    <button class="tab" data-tab="resumen" aria-current="page"><svg><use href="#i-home"/></svg>Resumen</button>
+    <button class="tab" data-tab="boca"><svg><use href="#i-list"/></svg>Boca</button>
+    <button class="tab" data-tab="canchas"><svg><use href="#i-pin"/></svg>Canchas</button>
+    <button class="tab" data-tab="goleadores"><svg><use href="#i-ball"/></svg>Goleadores</button>
+    <button class="tab add" data-tab="agregar"><svg><use href="#i-plus"/></svg>Agregar</button>
+  </nav>
+</div>
+
+<script src="/app.js"></script>
+</body>
+</html>
